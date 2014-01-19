@@ -20,6 +20,7 @@ class ActMon(object):
         self._conf_fname = os.path.join(self._conf_dir_name, 'conf.json')
         self._load_conf()
         self._load_log()
+        self._last_application = ('', '')
 
     def _load_conf(self):
         """Load configuration from disk
@@ -151,6 +152,7 @@ class ActMon(object):
         while True:
             window = display.get_input_focus().focus
             application_name, title = self._get_application_name(window)
+            self._last_application = (application_name, title)
 
             self._app_usage.update([application_name,])
             self._app_usage_detail[application_name].update([title,])
@@ -173,9 +175,10 @@ class ActMon(object):
         tags_summary = Counter()
 
         for name, cnt in self._app_usage.most_common(10):
-            o.append((cnt * 100.0 / self._totcnt, name, ''))
+            o.append((cnt * 100.0 / self._totcnt, name, '', False))
             for title, wcnt in self._app_usage_detail[name].most_common(10):
-                o.append((wcnt * 100.0 / self._totcnt, '', title))
+                current = (name, title) == self._last_application
+                o.append((wcnt * 100.0 / self._totcnt, '', title, current))
 
                 tags = self._classify(name, title)
                 tags_summary.update({t: wcnt for t in tags})

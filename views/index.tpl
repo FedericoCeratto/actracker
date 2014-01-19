@@ -18,15 +18,16 @@
     </head>
     <body>
         <table>
-        % for k,v,v2 in app_usage:
+        % for perc, name, title, current in app_usage:
             <tr>
-                <td class="percentage">{{"%.1f" % k}}</td>
+                <td class="percentage">{{"%.1f" % perc}}</td>
                 <td class="bar">
-                    <div class="bar" style="width:{{int(k)}}px">
+                    <div class="bar" style="width:{{int(perc)}}px">
                     </div>
                 </td>
-                <td>{{v}}</td>
-                <td>{{v2}}</td>
+                <td>{{name}}</td>
+                <td>{{'*' if current else ''}}
+                <td>{{title}}</td>
             </tr>
         % end
         </table>
