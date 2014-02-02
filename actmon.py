@@ -4,6 +4,7 @@ from datetime import datetime
 import Xlib.display
 import gevent
 import json
+import string
 import os
 import os.path
 import re
@@ -101,11 +102,13 @@ class ActMon(object):
 
         print "Writing %s" % fn
         d = {'au': self._app_usage, 'ad': self._app_usage_detail}
-        with open(tmp_fn, 'w') as f:
-            json.dump(d, f)
+        try:
+            with open(tmp_fn, 'w') as f:
+                json.dump(d, f)
 
-        os.rename(tmp_fn, fn)
-        print repr(self._app_usage_detail)
+            os.rename(tmp_fn, fn)
+        except Exception, e:
+            print("Exception %s while saving" % e)
 
 
     @classmethod
@@ -125,6 +128,7 @@ class ActMon(object):
                 continue
 
             application_name = wmclass[1]
+            title = filter(lambda x: x in string.printable, title)
             return application_name, title
 
     def _classify(self, application_name, title):
