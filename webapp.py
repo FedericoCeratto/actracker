@@ -3,6 +3,7 @@
 
 import bottle
 from gevent import monkey; monkey.patch_all()
+from setproctitle import setproctitle
 
 from actmon import ActMon
 
@@ -25,9 +26,14 @@ def route_conf():
 
 def main():
 
+    setproctitle('actracker')
+    #from trayicon import create_tray_icon
+    #create_tray_icon()
+
     global am
     am = ActMon()
     am.start()
+
     try:
         bottle.run(port=am.conf['port'], server='gevent')
     except Exception, e:
