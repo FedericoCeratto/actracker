@@ -1,8 +1,5 @@
-<html>
-    <head>
-        <title></title>
-        <meta http-equiv="refresh" content="1" >
-        <style>
+% include('header.tpl')
+
             div.bar {
                 height: 4px;
                 border: 1px solid #888;
@@ -13,12 +10,20 @@
             td.bar {
                 width: 100px;
             }
+            span.addrule {
+                color: #333;
+            }
+            span.addrule:hover {
+                color: #c03030;
+            }
 
         </style>
+        <meta http-equiv="refresh" content="2" >
     </head>
     <body>
+        % include('menu.tpl')
         <table>
-        % for perc, name, title, current in app_usage:
+        % for perc, name, title, current, tags in app_usage:
             <tr>
                 <td class="percentage">{{"%.1f" % perc}}</td>
                 <td class="bar">
@@ -26,6 +31,9 @@
                     </div>
                 </td>
                 <td>{{name}}</td>
+                <td>
+                    <a href="/conf">{{', '.join(tags)}}</a>
+                </td>
                 <td>{{'*' if current else ''}}
                 <td>{{title}}</td>
             </tr>
@@ -44,5 +52,10 @@
             </tr>
         % end
         </table>
+        <p>Tot cnt: {{tot_cnt}}</p>
     </body>
+    <script>
+    $("span#addrule").click( function() {
+    });
+    </script>
 </html>
